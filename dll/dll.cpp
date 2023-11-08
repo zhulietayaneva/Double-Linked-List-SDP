@@ -6,6 +6,20 @@ struct Node
 {
     T data;
     Node* prev, * next = nullptr;
+
+    Node(T val)
+    {
+        data = val;
+        this->prev = nullptr;
+        this->next = nullptr;
+    }
+
+    Node(T val,Node* prev,Node* next)
+    {
+        data = val;
+        this->prev = prev;
+        this->next = next;
+    }
 };
 
 template <typename T>
@@ -155,6 +169,25 @@ bool filter_condition(int n)
     return n > 0;
 }
 
+Node<int>* range(int x, int y)
+{
+    if(x>y)
+    {
+        int temp = x;
+        x = y;
+        y = temp;
+    }
+    Node<int>* result = new Node<int>(x);
+    Node<int>* temp = result;
+    for(int i = x+1; i<y+1;i++)
+    {
+        Node<int>* to_add = new Node<int>(i);
+        to_add->prev = temp;
+        temp->next = to_add;
+        temp = temp->next;
+    }
+    return result;
+}
 
 
 //---------------hulieta---------------------
@@ -222,9 +255,6 @@ Node<T>* range_j(T a, T b) {
 
 }
 
-
-
-
 int main() 
 {
     Node<int>* a = new Node<int>{ 1,nullptr,nullptr };
@@ -241,7 +271,8 @@ int main()
     print(a);
     filter_j<int>(a, filter_condition);
     print(a);
-   
+    Node<int>* range_test = range(10, -10);
+    print(range_test);
     
 }
 
