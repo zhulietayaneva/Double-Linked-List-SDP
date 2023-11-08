@@ -157,7 +157,7 @@ bool filter_condition(int n)
 
 
 
-//hulieta
+//---------------hulieta---------------------
 
 
 template <typename T>
@@ -200,6 +200,27 @@ void filter_j(Node<T>* &first, std::function<bool(T)> kur)
     }
 }
 
+template <typename T>
+Node<T>* range_j(T a, T b) {
+
+    if (a<b)
+    {
+        T temp;
+        temp=b;
+        b = a;
+        a = temp;
+    }
+
+    Node<T>* first = new Node<T>();
+    for (int i = a; i <= b; i++)
+    {
+        
+
+
+    }
+    return first;
+
+}
 
 
 
