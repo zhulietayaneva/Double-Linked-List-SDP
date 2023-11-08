@@ -7,6 +7,12 @@ struct Node
     T data;
     Node* prev, * next = nullptr;
 
+    Node() {
+       
+        prev = nullptr;
+        next = nullptr;
+    }
+
     Node(T val)
     {
         data = val;
@@ -303,6 +309,50 @@ void filter_j(Node<T>* &first, std::function<bool(T)> kur)
     }
 }
 
+template <typename T>
+Node<T>* range_j(T a, T b) {
+
+    if (a>b)
+    {
+        T temp;
+        temp=b;
+        b = a;
+        a = temp;
+    }
+
+    Node<T>* first = new Node<T>(a,nullptr,new Node<T>());
+    Node<T>* temp = first;
+    for (int i = a+1; i <= b; i++)
+    {
+        Node<T>* oldTemp = temp;
+        if(i==b)
+        {
+            temp = new Node<T>(i, oldTemp, nullptr);            
+        }
+        else
+        {
+            temp = new Node<T>(i,oldTemp,new Node<T>());                  
+        }
+        oldTemp->next = temp;
+    }
+    return first;
+
+}
+
+template <typename T>
+Node<T>* reverse_j(Node<T>* &first, Node<T>* &last) {
+
+    Node<T>* temp = first;
+    while (temp)
+    {
+        std::swap(temp->next, temp->prev);
+        temp = temp->prev;
+    }
+    std::swap(first, last);
+    return first;
+}
+
+
 
 int main() 
 {
@@ -318,17 +368,8 @@ int main()
     d->next = e;
     e->next = f;
     print(a);
-    filter_j<int>(a, filter_condition);
-    print(a);
-    Node<int>* range_test = range(10, -10);
-    print(range_test);
-    reverse(range_test);
-    append(range_test, a);
-    print(range_test);
-    Node<int>* concat_test = concat(range_test, a);
-    print(concat_test);
-    filter(concat_test, filter_condition);
-    print(concat_test);
+    print(reverse_j(a,f));
+   
     
 }
 
