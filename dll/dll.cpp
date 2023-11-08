@@ -272,6 +272,109 @@ Node<T>* concat(Node<T>* l1, Node<T>* l2)
 }
 
 
+
+
+Node<int>* fill_gaps(Node<int>* first)
+{
+    Node<int>* temp = first;
+
+    while (temp->next)
+    {
+        //std::cout << temp->data<<", "<<temp->next->data<<std::endl;
+        if (temp->data > 2 * temp->next->data) {
+            while (temp->data > 2 * temp->next->data)
+            {
+
+                Node<int>* new_node = new Node<int>(temp->data / 2);
+                new_node->next = temp->next;
+                temp->next = new_node;
+                temp = temp->next;
+            }
+        }
+        else
+        {
+            temp = temp->next;
+        }
+    }
+
+    return first;
+}
+
+
+void keep_product(Node<int>* first)
+{
+    if (!first->next && !first->next->next)
+    {
+        return;
+    }
+
+    Node<int>* curr_1 = first;
+    Node<int>* curr_2 = curr_1->next;
+    Node<int>* temp = curr_2->next;
+    while (temp)
+    {
+
+        if (temp->data % curr_1->data != 0 || temp->data % curr_2->data != 0)
+        {
+            Node<int>* to_delete = temp;
+            temp = temp->next;
+            curr_2->next = temp;
+            delete to_delete;
+
+        }
+        else
+        {
+            temp = temp->next;
+            curr_2 = curr_2->next;
+            curr_1 = curr_1->next;
+        }
+    }
+
+
+}
+
+
+Node<int>* mirror(Node<int>* first)
+{
+    Node<int>* result = new Node<int>(first->data);
+    Node<int>* curr = result;
+    Node<int>* temp = first->next;
+    while (temp)
+    {
+        Node<int>* new_node = new Node<int>(temp->data);
+        curr->next = new_node;
+        curr = curr->next;
+        temp = temp->next;
+    }
+
+    Node<int>* temp_2 = first;
+    Node<int>* prev_node = NULL, * next_node = NULL;
+    print(temp_2);
+    while (temp_2)
+    {
+        next_node = temp_2->next;
+
+        temp_2->next = prev_node;
+
+        prev_node = temp_2;
+        temp_2 = next_node;
+    }
+
+
+    Node<int>* temp_3 = prev_node;
+    while (temp_3)
+    {
+        Node<int>* new_node = new Node<int>(temp_3->data);
+        curr->next = new_node;
+        curr = curr->next;
+        temp_3 = temp_3->next;
+    }
+
+
+    return result;
+}
+
+
 //------------------hulieta-----------------
 
 
@@ -430,10 +533,6 @@ int main()
 
     print(a);
     
-
-    append(f, g);
-    print(a);
-   
     
 }
 
