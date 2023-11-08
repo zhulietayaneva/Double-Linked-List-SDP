@@ -7,6 +7,12 @@ struct Node
     T data;
     Node* prev, * next = nullptr;
 
+    Node() {
+       
+        prev = nullptr;
+        next = nullptr;
+    }
+
     Node(T val)
     {
         data = val;
@@ -236,7 +242,7 @@ void filter_j(Node<T>* &first, std::function<bool(T)> kur)
 template <typename T>
 Node<T>* range_j(T a, T b) {
 
-    if (a<b)
+    if (a>b)
     {
         T temp;
         temp=b;
@@ -244,12 +250,22 @@ Node<T>* range_j(T a, T b) {
         a = temp;
     }
 
-    Node<T>* first = new Node<T>();
-    for (int i = a; i <= b; i++)
+    Node<T>* first = new Node<T>(a,nullptr,new Node<T>());
+    Node<T>* temp = first;
+    for (int i = a+1; i <= b; i++)
     {
-        
-
-
+        Node<T>* oldTemp = temp;
+        if(i==b)
+        {
+            temp = new Node<T>(i, oldTemp, nullptr);
+            
+        }
+        else
+        {
+            temp = new Node<T>(i,oldTemp,new Node<T>());      
+            
+        }
+        oldTemp->next = temp;
     }
     return first;
 
@@ -271,8 +287,8 @@ int main()
     print(a);
     filter_j<int>(a, filter_condition);
     print(a);
-    Node<int>* range_test = range(10, -10);
-    print(range_test);
+    print(range_j(1, 5));
+   
     
 }
 
