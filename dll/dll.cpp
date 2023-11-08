@@ -101,29 +101,29 @@ void filter(Node<T>* &first, bool (* func)(T))
     Node<T>* temp = first;
     while(temp)
     {
-        if(func(temp->data))
+        if(!func(temp->data))
         {
+            Node<T>* to_delete = temp;
             if(!temp->prev)
             {
-                
                 temp->next->prev = nullptr;
                 temp = temp->next;   
                 first = temp;
+                delete to_delete;
                 continue;
             }
 
             if(!temp->next)
             {
                 temp = temp->prev;
-                delete temp->next;
                 temp->next = nullptr;
+                delete to_delete;
                 break;
             }
             else
             {
                 temp->prev->next = temp->next;
                 temp->next->prev = temp->prev;
-                Node<T>* to_delete = temp;
                 temp = temp->next;
                 delete to_delete;
             }
@@ -196,7 +196,77 @@ Node<int>* range(int x, int y)
 }
 
 
-//---------------hulieta---------------------
+template <typename T>
+void reverse(Node<T>* &first)
+{
+   Node<T>* temp = first;
+   Node<T>* start = first;
+   Node<T>* end = nullptr;
+   int cnt = 0;
+   while(temp)
+   {
+       Node<T>* next = temp->next;
+       temp->next = temp->prev;
+       temp->prev = next;
+      
+       if(!temp->prev&&cnt!= 0)
+       {
+         end = temp;
+       }
+       temp = next;
+       cnt++;
+   }
+   first = end;
+}
+
+template <typename T>
+void append(Node<T>* &l1,Node<T>* l2)
+{
+    Node<T>* temp_1 = l1;
+    Node<T>* temp_2 = l2;
+    while(temp_1->next)
+    {
+        temp_1 = temp_1->next;
+    }
+
+    while(temp_2)
+    {
+        Node<T>* new_node = new Node<T>(temp_2->data);
+        new_node->prev = temp_1;
+        temp_1->next = new_node;
+        temp_1 = temp_1->next;
+        temp_2 = temp_2->next;
+    }
+}
+
+template <typename T>
+Node<T>* concat(Node<T>* l1, Node<T>* l2)
+{
+    Node<T>* temp_1 = l1;
+    Node<T>* temp_2 = l2;
+    Node<T>* result = new Node<T>(temp_1->data);
+    Node<T>* temp = result;
+    temp_1 = temp_1->next;
+    while(temp_1)
+    {
+        Node<T>* new_node = new Node<T>(temp_1->data);
+        new_node->prev = temp;
+        temp->next = new_node;
+        temp = temp->next;
+        temp_1 = temp_1->next;
+    }
+
+    while (temp_2)
+    {
+        Node<T>* new_node = new Node<T>(temp_2->data);
+        new_node->prev = temp;
+        temp->next = new_node;
+        temp = temp->next;
+        temp_2 = temp_2->next;
+    }
+    return result;
+}
+//huilieta
 
 
 template <typename T>
