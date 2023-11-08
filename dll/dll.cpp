@@ -252,11 +252,13 @@ Node<T>* concat(Node<T>* l1, Node<T>* l2)
     Node<T>* temp = result;
     temp_1 = temp_1->next;
     while(temp_1)
-    {
+    {                                   //data  , temp,  
         Node<T>* new_node = new Node<T>(temp_1->data);
         new_node->prev = temp;
         temp->next = new_node;
         temp = temp->next;
+
+
         temp_1 = temp_1->next;
     }
 
@@ -284,7 +286,6 @@ Node<int>* fill_gaps(Node<int>* first)
         if (temp->data > 2 * temp->next->data) {
             while (temp->data > 2 * temp->next->data)
             {
-
                 Node<int>* new_node = new Node<int>(temp->data / 2);
                 new_node->next = temp->next;
                 temp->next = new_node;
@@ -461,7 +462,7 @@ Node<T>* reverse_j(Node<T>* &first, Node<T>* &last) {
     return first;
 }
 template <typename T>
-void append(Node<T>* &l1_last, Node<T>* &l2) {
+void append_j(Node<T>* &l1_last, Node<T>* &l2) {
 
     Node<T>* temp = l2;
     temp->prev = l1_last;
@@ -476,35 +477,40 @@ void append(Node<T>* &l1_last, Node<T>* &l2) {
 }
 
 template <typename T>
-void concat(Node<T>* &l1, Node<T>* &l2) {
+Node<T>* concat_j(Node<T>* &l1, Node<T>* &l2) {
 
-    Node<T>* temp = l1;
-    Node<T>* temp_l1 = new Node<T>(l1->data);
-    Node<T>* temp_l2 = new Node<T>(l2->data);
-  
-    while (temp) {
+    Node<T>* iter = l1;
+    Node<T>* iter_l1 = new Node<T>(l1->data);
+    Node<T>* iter_l2 = new Node<T>(l2->data);
+    Node<T>* res = iter_l1;
+    iter = l1->next;
+    while (iter) {
 
-        Node<T>* newNode = new Node<T>(temp->data, temp_l1->prev, temp_l1->next);
+        Node<T>* newNode = new Node<T>(iter->data, iter_l1, nullptr);       
+        iter_l1->next = newNode;
 
-        newNode->prev = temp_l1;
-        temp_l1->next = newNode;
+        iter_l1 = newNode;
 
-        temp = temp->next;
+        iter = iter->next;
     }   
-
-    temp = l2;
   
-    while (temp) {
+    iter_l1->next = iter_l2;
+    iter = l2->next;
+  
+    while (iter) {
 
-        Node<T>* newNode = new Node<T>(temp->data, temp_l1->prev, temp_l1->next);
-        temp_l1->next = newNode;
+        Node<T>* newNode = new Node<T>(iter->data, iter_l2, nullptr);
+        iter_l2->next = newNode;
 
-        temp = temp->next;
+        iter_l2 = newNode;
+
+        iter = iter->next;
     }
 
+ 
 
 
-    return;
+    return res;
 
 }
 
@@ -527,12 +533,12 @@ int main()
     Node<int>* g = new Node<int>{ 7,f,nullptr };
     Node<int>* h = new Node<int>{ -8,g,nullptr };
     Node<int>* i = new Node<int>{ 9,h,nullptr };
-    f->next = g;
     g->next = h;
     h->next = i;
 
     print(a);
-    
+    print(concat_j(a, g));
+
     
 }
 
