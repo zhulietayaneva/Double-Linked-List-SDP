@@ -1,10 +1,11 @@
 #include <iostream>
+#include <functional>
 
 template<typename T>
 struct Node 
 {
     T data;
-    Node* prev, * next;
+    Node* prev, * next = nullptr;
 };
 
 template <typename T>
@@ -149,28 +150,77 @@ T reduce(Node<T>* first, T(*func)(T,T))
     return res;
 }
 
-bool greater_5(int n)
+bool filter_condition(int n)
 {
     return n > 0;
 }
+
+
+
+//hulieta
+
+
+template <typename T>
+void filter_j(Node<T>* &first, std::function<bool(T)> kur)
+{
+    Node<T>* temp = first;
+
+    while (temp)
+    {
+        
+        if (kur(temp->data))
+        {
+            Node<T>* toDelete = temp;
+            if (temp->prev==nullptr)
+            {
+                temp = temp->next;
+                temp->prev = nullptr;
+                first = temp;
+                delete toDelete;                
+            }
+            else if(temp->next == nullptr)
+            {
+                temp->prev->next = nullptr;
+                temp = temp->prev;
+                delete toDelete;
+                break;
+            }
+            else
+            {
+                temp->next->prev = temp->prev;
+                temp->prev->next = temp->next;
+                temp = temp->next;
+                delete toDelete;
+            }            
+        }
+        else 
+        {
+             temp = temp->next;
+        }
+    }
+}
+
+
+
+
+
 int main() 
 {
-    Node<int>* a = new Node<int>{ -9,nullptr,nullptr };
-    Node<int>* b = new Node<int>{ 8,a,nullptr };
-    Node<int>* c = new Node<int>{ -7,b,nullptr };
-    Node<int>* d = new Node<int>{ 6,c,nullptr };
-    Node<int>* e = new Node<int>{ -10,d,nullptr };
-    Node<int>* f = new Node<int>{ 10,e,nullptr };
+    Node<int>* a = new Node<int>{ 1,nullptr,nullptr };
+    Node<int>* b = new Node<int>{ -2,a,nullptr };
+    Node<int>* c = new Node<int>{ 3,b,nullptr };
+    Node<int>* d = new Node<int>{- 4,c,nullptr };
+    Node<int>* e = new Node<int>{ 5,d,nullptr };
+    Node<int>* f = new Node<int>{ -6,e,nullptr };
     a->next = b;
     b->next = c;
     c->next = d;
     d->next = e;
     e->next = f;
     print(a);
-    map(a, add2);
+    filter_j<int>(a, filter_condition);
     print(a);
-    filter(a, greater_5);
-    print(a); 
-    std::cout << reduce(a,sum);
+   
+    
 }
 
