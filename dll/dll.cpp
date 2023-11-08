@@ -281,6 +281,53 @@ Node<T>* reverse_j(Node<T>* &first, Node<T>* &last) {
     std::swap(first, last);
     return first;
 }
+template <typename T>
+void append(Node<T>* &l1_last, Node<T>* &l2) {
+
+    Node<T>* temp = l2;
+    temp->prev = l1_last;
+    l1_last->next = temp;
+    while (temp) {
+        Node<T>* newNode = new Node<T>(temp->data, temp->prev, temp->next);
+        temp = temp->next;
+    }
+
+    return;
+
+}
+
+template <typename T>
+void concat(Node<T>* &l1, Node<T>* &l2) {
+
+    Node<T>* temp = l1;
+    Node<T>* temp_l1 = new Node<T>(l1->data);
+    Node<T>* temp_l2 = new Node<T>(l2->data);
+  
+    while (temp) {
+
+        Node<T>* newNode = new Node<T>(temp->data, temp_l1->prev, temp_l1->next);
+
+        newNode->prev = temp_l1;
+        temp_l1->next = newNode;
+
+        temp = temp->next;
+    }   
+
+    temp = l2;
+  
+    while (temp) {
+
+        Node<T>* newNode = new Node<T>(temp->data, temp_l1->prev, temp_l1->next);
+        temp_l1->next = newNode;
+
+        temp = temp->next;
+    }
+
+
+
+    return;
+
+}
 
 
 
@@ -297,8 +344,19 @@ int main()
     c->next = d;
     d->next = e;
     e->next = f;
+
+    Node<int>* g = new Node<int>{ 7,f,nullptr };
+    Node<int>* h = new Node<int>{ -8,g,nullptr };
+    Node<int>* i = new Node<int>{ 9,h,nullptr };
+    f->next = g;
+    g->next = h;
+    h->next = i;
+
     print(a);
-    print(reverse_j(a,f));
+    
+
+    append(f, g);
+    print(a);
    
     
 }
