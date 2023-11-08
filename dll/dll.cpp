@@ -257,19 +257,32 @@ Node<T>* range_j(T a, T b) {
         Node<T>* oldTemp = temp;
         if(i==b)
         {
-            temp = new Node<T>(i, oldTemp, nullptr);
-            
+            temp = new Node<T>(i, oldTemp, nullptr);            
         }
         else
         {
-            temp = new Node<T>(i,oldTemp,new Node<T>());      
-            
+            temp = new Node<T>(i,oldTemp,new Node<T>());                  
         }
         oldTemp->next = temp;
     }
     return first;
 
 }
+
+template <typename T>
+Node<T>* reverse_j(Node<T>* &first, Node<T>* &last) {
+
+    Node<T>* temp = first;
+    while (temp)
+    {
+        std::swap(temp->next, temp->prev);
+        temp = temp->prev;
+    }
+    std::swap(first, last);
+    return first;
+}
+
+
 
 int main() 
 {
@@ -285,9 +298,7 @@ int main()
     d->next = e;
     e->next = f;
     print(a);
-    filter_j<int>(a, filter_condition);
-    print(a);
-    print(range_j(1, 5));
+    print(reverse_j(a,f));
    
     
 }
